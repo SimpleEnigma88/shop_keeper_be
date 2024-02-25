@@ -61,3 +61,29 @@ Player.all.each do |player|
     end
   end
 end
+
+players = Player.all.shuffle
+
+players.each_with_index do |player, index|
+  # Only create a party for 1 out of every 1-3 players
+  next unless index % rand(1..3) == 0
+
+  party = Party.create!(
+    name: Faker::Games::DnD.city,
+    dm_player: player
+  )
+
+  # Select 1-3 characters from different players
+  characters = players.sample(rand(2..5)).map do |p|
+    p.characters.sample
+  end
+
+  # 35% of the time, add the DM's character to the party
+  if rand < 0.35 && player.characters.any?
+    characters << player.characters.sample
+  end
+
+  characters.each do |character|
+    character.update!(party: party)
+  end
+end

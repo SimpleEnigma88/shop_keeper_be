@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_24_230024) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_25_012455) do
   create_table "characters", force: :cascade do |t|
     t.string "name"
     t.string "char_class"
@@ -49,6 +49,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_230024) do
     t.integer "dm_player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["dm_player_id"], name: "index_parties_on_dm_player_id"
   end
 
