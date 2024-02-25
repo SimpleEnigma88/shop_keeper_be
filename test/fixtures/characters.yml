@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  char_class: MyString
+  level: 1
+  player: one
+  party: one
+  magic_item: one
+  mundane_item: one
+
+two:
+  name: MyString
+  char_class: MyString
+  level: 1
+  player: two
+  party: two
+  magic_item: two
+  mundane_item: two
