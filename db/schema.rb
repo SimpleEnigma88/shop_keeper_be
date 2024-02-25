@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_25_012455) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_25_173121) do
+  create_table "character_magic_items", force: :cascade do |t|
+    t.integer "character_id", null: false
+    t.integer "magic_item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_id"], name: "index_character_magic_items_on_character_id"
+    t.index ["magic_item_id"], name: "index_character_magic_items_on_magic_item_id"
+  end
+
   create_table "characters", force: :cascade do |t|
     t.string "name"
     t.string "char_class"
@@ -62,6 +71,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_25_012455) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "character_magic_items", "characters"
+  add_foreign_key "character_magic_items", "magic_items"
   add_foreign_key "characters", "magic_items"
   add_foreign_key "characters", "mundane_items"
   add_foreign_key "characters", "parties"
