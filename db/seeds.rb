@@ -85,5 +85,9 @@ players.each_with_index do |player, index|
 
   characters.each do |character|
     character.update!(party: party)
+
+    # Assign a random number of magic items from the magic_items table to each character
+    magic_items = MagicItem.order("RANDOM()").limit(rand(1..5))
+    character.magic_items << magic_items
   end
 end
