@@ -1,13 +1,18 @@
 class CharactersController < ApplicationController
+  before_action :set_player, only: [:index, :show, :create, :update, :destroy]
+  
   def index
-    player = Player.find(params[:player_id])
-    characters = player.characters
+    characters = @player.characters
     render json: characters
   end
 
+  def show
+    character = @player.characters.find(params[:id])
+    render json: character
+  end
+
   def create
-    player = Player.find(params[:player_id])
-    character = player.characters.new(character_params)
+    character = @player.characters.new(character_params)
 
     if character.save
       render json: character, status: :created
@@ -17,17 +22,30 @@ class CharactersController < ApplicationController
   end
 
   def update
-    player = Player.find(params[:player_id])
-    character = player.characters.find(params[:id])
+    character = @player.characters.find(params[:id])
 
     if character.update(character_params)
         render json: character
     else
         render json: character.errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    character = @player.characters.find(params[:id])
+
+    if character.destroy
+      render json: character
+    else
+      render json: character.errors, status: :unprocessable_entity
     end
+  end
 
   private
+
+  def set_player
+    @player = Player.find(params[:player_id])
+  end
 
   def character_params
     params.require(:character).permit(:name, :char_class, :level)
