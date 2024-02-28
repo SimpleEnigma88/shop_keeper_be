@@ -24,6 +24,8 @@ ActiveRecord::Base.transaction do
       requires_attunement: record_data["requires_attunement"]
     }
 
+    MagicItem.destroy_all
+    
     begin
       MagicItem.create!(filtered_data)
     rescue ActiveRecord::RecordInvalid => e
@@ -73,7 +75,7 @@ players.each_with_index do |player, index|
     dm_player: player
   )
 
-  # Select 1-3 characters from different players
+  # Select characters from different players
   characters = players.sample(rand(2..5)).map do |p|
     p.characters.sample
   end
