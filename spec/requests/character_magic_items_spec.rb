@@ -9,8 +9,8 @@ RSpec.describe CharacterMagicItemsController, type: :controller do
   last_name: Faker::Name.last_name) }
 
   let(:character) { Character.create!(
-  name: 'CharacterName', 
-  char_class: 'Warrior', 
+  name: 'Faker::DnD.name', 
+  char_class: 'Faker::DnD.klass', 
   level: 1, 
   player_id: player.id) }
 
