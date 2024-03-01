@@ -3,12 +3,12 @@ class CharactersController < ApplicationController
   
   def index
     characters = @player.characters
-    render json: characters
+    render json: characters, status: :ok
   end
 
   def show
     character = @player.characters.find(params[:id])
-    render json: character
+    render json: character, status: :ok
   end
 
   def create
@@ -25,7 +25,7 @@ class CharactersController < ApplicationController
     character = @player.characters.find(params[:id])
 
     if character.update(character_params)
-        render json: character
+        render json: character, status: :ok
     else
         render json: character.errors, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class CharactersController < ApplicationController
     character = @player.characters.find(params[:id])
 
     if character.destroy
-      render json: character
+      render json: character, status: :ok
     else
       render json: character.errors, status: :unprocessable_entity
     end

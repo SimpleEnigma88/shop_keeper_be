@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   end
 
   resources :characters do
-    resources :magic_items, only: [:index, :show, :destroy] # for assigning existing items
+    resources :character_magic_items, only: [:create, :destroy]
   end
 
   resources :magic_items, only: [:index, :show, :create, :update, :destroy] # for managing magic items independently

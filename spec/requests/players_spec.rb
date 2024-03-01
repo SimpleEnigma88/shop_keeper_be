@@ -49,6 +49,42 @@ RSpec.describe PlayersController, type: :controller do
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
+
+    context "with duplicate email address" do
+      it "does not create a new Player" do
+        player = Player.create! valid_attributes
+        duplicate_attributes = valid_attributes.merge(email: player.email)
+        expect {
+          post :create, params: { player: duplicate_attributes }
+        }.to change(Player, :count).by(0)
+      end
+
+      it "renders a JSON response with errors for the new player" do
+        player = Player.create! valid_attributes
+        duplicate_attributes = valid_attributes.merge(email: player.email)
+        post :create, params: { player: duplicate_attributes }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to match(a_string_including("application/json"))
+      end
+    end
+
+    context "with duplicate user_name" do
+      it "does not create a new Player" do
+        player = Player.create! valid_attributes
+        duplicate_attributes = valid_attributes.merge(user_name: player.user_name)
+        expect {
+          post :create, params: { player: duplicate_attributes }
+        }.to change(Player, :count).by(0)
+      end
+
+      it "renders a JSON response with errors for the new player" do
+        player = Player.create! valid_attributes
+        duplicate_attributes = valid_attributes.merge(user_name: player.user_name)
+        post :create, params: { player: duplicate_attributes }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to match(a_string_including("application/json"))
+      end
+    end
   end
 
   describe "PUT #update" do
