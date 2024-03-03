@@ -48,6 +48,6 @@ class CharactersController < ApplicationController
   end
 
   def character_params
-    params.require(:character).permit(:name, :char_class, :level)
+    params.require(:character).permit(:name, :char_class, :level, :party_id)
   end
 end
