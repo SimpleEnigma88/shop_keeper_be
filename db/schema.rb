@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_25_173121) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_01_032426) do
   create_table "character_magic_items", force: :cascade do |t|
     t.integer "character_id", null: false
     t.integer "magic_item_id", null: false
@@ -26,12 +26,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_25_173121) do
     t.integer "level"
     t.integer "player_id", null: false
     t.integer "party_id"
-    t.integer "magic_item_id"
-    t.integer "mundane_item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["magic_item_id"], name: "index_characters_on_magic_item_id"
-    t.index ["mundane_item_id"], name: "index_characters_on_mundane_item_id"
     t.index ["party_id"], name: "index_characters_on_party_id"
     t.index ["player_id"], name: "index_characters_on_player_id"
   end
@@ -73,8 +69,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_25_173121) do
 
   add_foreign_key "character_magic_items", "characters"
   add_foreign_key "character_magic_items", "magic_items"
-  add_foreign_key "characters", "magic_items"
-  add_foreign_key "characters", "mundane_items"
   add_foreign_key "characters", "parties"
   add_foreign_key "characters", "players"
   add_foreign_key "parties", "players", column: "dm_player_id"
