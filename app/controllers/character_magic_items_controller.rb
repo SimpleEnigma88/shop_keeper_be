@@ -25,7 +25,7 @@ class CharacterMagicItemsController < ApplicationController
     @character.magic_items << magic_item
 
     if @character.save
-          render json: { message: "Magic item #{magic_item.name} added to #{@character.name}'s inventory", character: @character }, status: :created
+          render json: magic_item, status: :created
     else
       render json: @character.errors, status: :unprocessable_entity
     end
