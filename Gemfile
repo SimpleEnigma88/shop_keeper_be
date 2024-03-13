@@ -43,6 +43,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec'
   gem 'factory_bot'
+  gem 'rubocop'
+  gem 'syntax_tree'
 end
 
 group :development do
