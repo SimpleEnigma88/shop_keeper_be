@@ -7,25 +7,26 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+# frozen_string_literal: true
 
 require 'faker'
 require 'json'
 
 path = Rails.root.join('db', 'seeds', 'ModifiedMagicItems.json')
 records = JSON.parse(File.read(path))
+MagicItem.destroy_all
 
 ActiveRecord::Base.transaction do
   records.each do |record_data|
     filtered_data = {
-      name: record_data["name"],
-      category: record_data["type"],
-      desc: record_data["desc"], 
-      rarity: record_data["rarity"],
-      requires_attunement: record_data["requires_attunement"]
+      name: record_data['name'],
+      category: record_data['type'],
+      desc: record_data['desc'],
+      rarity: record_data['rarity'],
+      requires_attunement: record_data['requires_attunement']
     }
+    puts filtered_data
 
-    MagicItem.destroy_all
-    
     begin
       MagicItem.create!(filtered_data)
     rescue ActiveRecord::RecordInvalid => e
@@ -37,7 +38,6 @@ ActiveRecord::Base.transaction do
   end
 end
 
-
 # Seed Players
 10.times do
   Player.create!(
@@ -48,19 +48,16 @@ end
   )
 end
 
-
 Player.all.each do |player|
   rand(1..3).times do
-    begin
-      Character.create!(
-        name: Faker::Games::DnD.first_name,
-        char_class: Faker::Games::DnD.klass,
-        level: rand(1..20),
-        player: player
-      )
-    rescue ActiveRecord::RecordInvalid => e
-      puts "Failed to create character for player #{player.id}: #{e.message}"
-    end
+    Character.create!(
+      name: Faker::Games::DnD.first_name,
+      char_class: Faker::Games::DnD.klass,
+      level: rand(1..20),
+      player:
+    )
+  rescue ActiveRecord::RecordInvalid => e
+    puts "Failed to create character for player #{player.id}: #{e.message}"
   end
 end
 
@@ -68,7 +65,7 @@ players = Player.all.shuffle
 
 players.each_with_index do |player, index|
   # Only create a party for 1 out of every 1-3 players
-  next unless index % rand(1..3) == 0
+  next unless (index % rand(1..3)).zero?
 
   party = Party.create!(
     name: Faker::Games::DnD.city,
@@ -81,15 +78,13 @@ players.each_with_index do |player, index|
   end
 
   # 35% of the time, add the DM's character to the party
-  if rand < 0.35 && player.characters.any?
-    characters << player.characters.sample
-  end
+  characters << player.characters.sample if rand < 0.35 && player.characters.any?
 
   characters.each do |character|
-    character.update!(party: party)
+    character.update!(party:)
 
     # Assign a random number of magic items from the magic_items table to each character
-    magic_items = MagicItem.order("RANDOM()").limit(rand(1..5))
+    magic_items = MagicItem.order('RANDOM()').limit(rand(1..5))
     character.magic_items << magic_items
   end
 end

@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
+# Character controller endpoints
 class CharactersController < ApplicationController
-  before_action :set_player, only: [:index, :show, :create, :update, :destroy]
-  
+  before_action :set_player, only: %i[index show create update destroy]
+
   def index
     characters = @player.characters
     render json: characters, status: :ok
@@ -25,9 +28,9 @@ class CharactersController < ApplicationController
     character = @player.characters.find(params[:id])
 
     if character.update(character_params)
-        render json: character, status: :ok
+      render json: character, status: :ok
     else
-        render json: character.errors, status: :unprocessable_entity
+      render json: character.errors, status: :unprocessable_entity
     end
   end
 
