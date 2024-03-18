@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# Controller for magic items database
 class MagicItemsController < ApplicationController
   def index
     @magic_items = MagicItem.all
