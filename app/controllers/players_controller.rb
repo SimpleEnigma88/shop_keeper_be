@@ -1,48 +1,57 @@
 class PlayersController < ApplicationController
   def index
-      players = Player.all
-      render json: players
+    players = Player.all
+    render json: players
   end
 
   def show
-      player = Player.find(params[:id])
-      
-      if player 
-          render json: player
-      else
-          render json: player.errors, status: :unprocessable_entity
-      end
+    if @player
+      render json: @player
+    else
+      render json: @player.errors, status: :unprocessable_entity
+    end
   end
 
   def create
-      player = Player.create(player_params)
-      
-      if player.save
-          render json: player, status: :created
-      else
-          render json: player.errors, status: :unprocessable_entity
-      end
-  end
+    player = Player.create(player_params)
 
-  def update
-    player = Player.find(params[:id])
-
-    if player.update(player_params)
-      render json: player
+    if player.save
+      render json: player, status: :created
     else
       render json: player.errors, status: :unprocessable_entity
     end
   end
 
-def destroy
-  player = Player.find(params[:id])
+  def update
+    if @player.update(player_params)
+      render json: @player
+    else
+      render json: @player.errors, status: :unprocessable_entity
+    end
+  end
 
-  # Create a copy of each character associated with the player that is in a party
-  player.characters.where.not(party_id: nil).each do |character|
+  def destroy
+    player = Player.find(params[:id])
+    copy_characters_and_items(player)
+    destroy_player(player)
+  end
+
+  private
+
+  def copy_characters_and_items(player)
+    player.characters.where.not(party_id: nil).each do |character|
+      copied_character = copy_character(character)
+      copy_magic_items(character, copied_character)
+    end
+  end
+
+  def copy_character(character)
     copied_character = character.dup
     copied_character.save!
+    copied_character
+  end
 
-    # Copy each magic item associated with the character
+  def copy_magic_items(character, copied_character)
     character.magic_items.each do |magic_item|
       copied_magic_item = magic_item.dup
       copied_magic_item.character_id = copied_character.id
@@ -50,16 +59,19 @@ def destroy
     end
   end
 
-  if player.destroy
-    render json: player
-  else
-    render json: player.errors, status: :unprocessable_entity
+  def destroy_player(player)
+    if player.destroy
+      render json: player
+    else
+      render json: player.errors, status: :unprocessable_entity
+    end
   end
-end
 
-  private
-  
+  def set_player
+    @player = Player.find(params[:id])
+  end
+
   def player_params
-      params.require(:player).permit(:user_name, :email, :first_name, :last_name)
+    params.require(:player).permit(:user_name, :email, :first_name, :last_name)
   end
 end
