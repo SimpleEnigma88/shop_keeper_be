@@ -1,4 +1,6 @@
 class PlayersController < ApplicationController
+  before_action :set_player, only: %i[show update destroy]
+
   def index
     players = Player.all
     render json: players
@@ -24,16 +26,16 @@ class PlayersController < ApplicationController
 
   def update
     if @player.update(player_params)
-      render json: @player
+      render json: @player, status: :ok
     else
       render json: @player.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
-    player = Player.find(params[:id])
-    copy_characters_and_items(player)
-    destroy_player(player)
+    @player = Player.find(params[:id])
+    copy_characters_and_items(@player)
+    destroy_player(@player)
   end
 
   private
@@ -72,6 +74,6 @@ class PlayersController < ApplicationController
   end
 
   def player_params
-    params.require(:player).permit(:user_name, :email, :first_name, :last_name)
+    params.require(:player).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation)
   end
 end

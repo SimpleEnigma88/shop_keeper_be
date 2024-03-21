@@ -4,7 +4,7 @@ FactoryBot.define do
     dm_player { create(:player) }
 
     after(:create) do |party|
-      create_list(:character, rand(7), party: party)
+      create_list(:character, rand(7), party:)
     end
   end
 end
