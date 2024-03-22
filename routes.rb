@@ -9,9 +9,5 @@ Rails.application.routes.draw do
     resources :parties, only: %i[index show]
   end
 
-  resources :magic_items, except: [:show] do
-    get 'random', on: :collection
-  end
-
   resources :magic_items, only: [:show]
 end

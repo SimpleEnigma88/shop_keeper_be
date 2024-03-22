@@ -63,9 +63,14 @@ class MagicItemsController < ApplicationController
     end
   end
 
+  # params should be a string of rarities separated by commas
   def find_random_magic_item
-    excluded_rarities = params[:excluded_rarities] ? params[:excluded_rarities].split(',') : []
-    @magic_item = MagicItem.where.not(rarity: excluded_rarities).order(Arel.sql('RANDOM()')).first
+    if params[:rarity]
+      rarities = params[:rarity].split(',')
+      @magic_item = MagicItem.where(rarity: rarities).order(Arel.sql('RANDOM()')).first
+    else
+      @magic_item = MagicItem.order(Arel.sql('RANDOM()')).first
+    end
   end
 
   def magic_item_params
