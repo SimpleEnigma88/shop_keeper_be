@@ -100,12 +100,20 @@ RSpec.describe MagicItemsController, type: :controller do
     end
   end
 
-  it 'returns a random magic_item with the specified rarity' do
-    very_rare_item1 = MagicItem.create!(valid_attributes.merge(rarity: 'very rare'))
-    very_rare_item2 = MagicItem.create!(valid_attributes.merge(rarity: 'very rare'))
-    get '/magic_items/random', params: { rarity: 'very rare' }
-    expect(response).to be_successful
-    json_response = JSON.parse(response.body)
-    expect([very_rare_item1.id, very_rare_item2.id]).to include(json_response['id'])
+  50.times do
+    it 'returns a random magic_item with the specified rarity' do
+      rarities_available = ['common', 'uncommon', 'rare', 'very rare', 'legendary', 'artifact']
+      random_rarity = rarities_available.sample(rand(1..rarities_available.size))
+      # puts random_rarity
+
+      item1 = MagicItem.create!(valid_attributes.merge(rarity: rarities_available.sample))
+
+      item2 = MagicItem.create!(valid_attributes.merge(rarity: 'common'))
+      get :show, params: { id: 'random', rarity: random_rarity }
+
+      expect(response).to be_successful
+      json_response = JSON.parse(response.body)
+      expect([item1.id, item2.id]).to include(json_response['id'])
+    end
   end
 end

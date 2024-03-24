@@ -89,21 +89,29 @@ RSpec.describe PlayersController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid parameters' do
-      let(:new_attributes) { { user_name: 'NewUserName' } }
+      it 'updates the player with a new user_name' do
+        player = FactoryBot.create(:player)
+        new_user_name = Faker::Internet.username
 
-      it 'updates the requested player' do
-        player = Player.create! valid_attributes
-        put :update, params: { id: player.to_param, player: new_attributes }
+        put :update,
+            params: { id: player.to_param,
+                      player: { user_name: new_user_name, password: player.password,
+                                password_confirmation: player.password_confirmation } }
         player.reload
-        expect(player.user_name).to eq('NewUserName')
-      end
 
-      it 'renders a JSON response with the player' do
-        player = Player.create! valid_attributes
-        put :update, params: { id: player.to_param, player: new_attributes }
+        expect(player.user_name).to eq(new_user_name)
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
+    end
+  end
+
+  context 'with valid parameters' do
+    it 'renders a JSON response with the player' do
+      player = Player.create! valid_attributes
+      put :update, params: { id: player.to_param, player: valid_attributes }
+      expect(response).to have_http_status(:ok)
+      expect(response.content_type).to match(a_string_including('application/json'))
     end
   end
 
@@ -115,13 +123,22 @@ RSpec.describe PlayersController, type: :controller do
       expect(response.content_type).to match(a_string_including('application/json'))
     end
   end
-end
 
-describe 'DELETE #destroy' do
-  it 'destroys the requested player' do
-    player = Player.create! valid_attributes
-    expect do
-      delete :destroy, params: { id: player.to_param }
-    end.to change(Player, :count).by(-1)
+  context 'with invalid parameters' do
+    it 'renders a JSON response with errors for the player' do
+      player = Player.create! valid_attributes
+      put :update, params: { id: player.to_param, player: invalid_attributes }
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.content_type).to match(a_string_including('application/json'))
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    it 'destroys the requested player' do
+      player = Player.create! valid_attributes
+      expect do
+        delete :destroy, params: { id: player.to_param }
+      end.to change(Player, :count).by(-1)
+    end
   end
 end

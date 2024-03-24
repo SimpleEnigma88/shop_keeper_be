@@ -26,6 +26,9 @@ gem 'puma', '>= 5.0'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
+# JWT for JSON Web Token generation and decoding
+gem 'jwt'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bcrypt'
 gem 'bootsnap', require: false
