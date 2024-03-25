@@ -1,6 +1,6 @@
 class PartiesController < ApplicationController
-  before_action :set_player, only: [:index, :show, :create, :update, :destroy]
-  
+  before_action :set_player, only: %i[index show create update destroy]
+
   # Show all dm_parties belonging to player, or the party for charcter id, when provided.
   def index
     if params[:player_id]
@@ -54,13 +54,13 @@ class PartiesController < ApplicationController
       render json: party.errors, status: :unprocessable_entity
     end
   end
-  
+
   private
 
-def set_player
-  @player = Player.find_by(id: params[:player_id]) || 
-  Player.find_by(id: params[:dm_player_id])
-end
+  def set_player
+    @player = Player.find_by(id: params[:player_id]) ||
+              Player.find_by(id: params[:dm_player_id])
+  end
 
   def set_character
     # Use find_by to return nil, instead of throwing an error, if the character_id is not found

@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
   before_action :set_player, only: %i[show update destroy]
+  before_action :authenticate_request, only: %i[index show update destroy]
 
   def index
     players = Player.all

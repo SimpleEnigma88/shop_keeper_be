@@ -1,13 +1,16 @@
 # spec/controllers/players_controller_spec.rb
 require 'rails_helper'
 
-RSpec.describe PlayersController, type: :controller do
+RSpec.describe PlayersController, type: :controller do # rubocop:disable Metrics/BlockLength
   let(:valid_attributes) { attributes_for(:player) }
   let(:invalid_attributes) { { user_name: nil } }
+  let(:player) { create(:player) }
+  let(:token) { auth_token_for_player(player) }
 
   describe 'GET #index' do
     it 'returns a success response' do
       Player.create! valid_attributes
+      request.headers['Authorization'] = "Bearer #{token}"
       get :index
       expect(response).to be_successful
     end
@@ -16,12 +19,13 @@ RSpec.describe PlayersController, type: :controller do
   describe 'GET #show' do
     it 'returns a success response' do
       player = Player.create! valid_attributes
+      request.headers['Authorization'] = "Bearer #{token}"
       get :show, params: { id: player.to_param }
       expect(response).to be_successful
     end
   end
 
-  describe 'POST #create' do
+  describe 'POST #create' do # rubocop:disable Metrics/BlockLength
     context 'with valid parameters' do
       it 'creates a new Player' do
         expect do
@@ -92,6 +96,7 @@ RSpec.describe PlayersController, type: :controller do
       it 'updates the player with a new user_name' do
         player = FactoryBot.create(:player)
         new_user_name = Faker::Internet.username
+        request.headers['Authorization'] = "Bearer #{token}"
 
         put :update,
             params: { id: player.to_param,
@@ -109,6 +114,7 @@ RSpec.describe PlayersController, type: :controller do
   context 'with valid parameters' do
     it 'renders a JSON response with the player' do
       player = Player.create! valid_attributes
+      request.headers['Authorization'] = "Bearer #{token}"
       put :update, params: { id: player.to_param, player: valid_attributes }
       expect(response).to have_http_status(:ok)
       expect(response.content_type).to match(a_string_including('application/json'))
@@ -118,6 +124,7 @@ RSpec.describe PlayersController, type: :controller do
   context 'with invalid parameters' do
     it 'renders a JSON response with errors for the player' do
       player = Player.create! valid_attributes
+      request.headers['Authorization'] = "Bearer #{token}"
       put :update, params: { id: player.to_param, player: invalid_attributes }
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.content_type).to match(a_string_including('application/json'))
@@ -127,6 +134,7 @@ RSpec.describe PlayersController, type: :controller do
   context 'with invalid parameters' do
     it 'renders a JSON response with errors for the player' do
       player = Player.create! valid_attributes
+      request.headers['Authorization'] = "Bearer #{token}"
       put :update, params: { id: player.to_param, player: invalid_attributes }
       expect(response).to have_http_status(:unprocessable_entity)
       expect(response.content_type).to match(a_string_including('application/json'))
@@ -136,6 +144,7 @@ RSpec.describe PlayersController, type: :controller do
   describe 'DELETE #destroy' do
     it 'destroys the requested player' do
       player = Player.create! valid_attributes
+      request.headers['Authorization'] = "Bearer #{token}"
       expect do
         delete :destroy, params: { id: player.to_param }
       end.to change(Player, :count).by(-1)
