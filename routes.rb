@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'players#index'
+  
   resources :players, only: %i[index show create update destroy] do
     resources :characters, only: %i[index show create update destroy]
     resources :parties, only: %i[index create show update destroy]
