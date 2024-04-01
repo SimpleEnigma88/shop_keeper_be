@@ -141,6 +141,7 @@ GEM
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
+    pg (1.5.6)
     prettier_print (1.2.1)
     psych (5.1.2)
       stringio
@@ -256,6 +257,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   jwt
+  pg
   puma (>= 5.0)
   rack-cors
   rails (~> 7.1.3)
