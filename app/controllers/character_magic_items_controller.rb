@@ -1,5 +1,6 @@
 class CharacterMagicItemsController < ApplicationController
   before_action :set_character
+  # before_action :authenticate_request, only: %i[index show create destroy]
 
   def index
     if @character.magic_items
