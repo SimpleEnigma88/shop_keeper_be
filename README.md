@@ -13,17 +13,3 @@ https://open5e.com/api-docs
 ## Live Demo
 
 You can check out the live demo of the app [here](https://shop-keeper.vercel.app/).
-
-## Running the tests
-
-Explain how to run the automated tests for this system.
-
-## Built With
-
-- List the software v1.0
-- List the software v2.0
-- And so on...
-
-## License
-
-This project is licensed under the MIT License
