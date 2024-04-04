@@ -1,24 +1,29 @@
-# README
+# Shopkeeper App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Shopkeeper App is a Dungeons & Dragons 5th Edition (DnD 5e) Loot and Treasure generator and distribution system for parties. It's designed to streamline the process of loot distribution and make your gaming sessions more enjoyable. Uses OGL content from the D&D 5e SRD.
 
-Things you may want to cover:
+https://open5e.com/api-docs
 
-* Ruby version
+## Features
 
-* System dependencies
+- Generate random loot based on DnD 5e rules
+- Distribute loot among party members
+- Keep track of each party member's inventory
 
-* Configuration
+## Live Demo
 
-* Database creation
+You can check out the live demo of the app [here](https://shop-keeper.vercel.app/).
 
-* Database initialization
+## Running the tests
 
-* How to run the test suite
+Explain how to run the automated tests for this system.
 
-* Services (job queues, cache servers, search engines, etc.)
+## Built With
 
-* Deployment instructions
+- List the software v1.0
+- List the software v2.0
+- And so on...
 
-* ...
+## License
+
+This project is licensed under the MIT License
