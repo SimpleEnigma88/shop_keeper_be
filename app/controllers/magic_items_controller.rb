@@ -59,7 +59,7 @@ class MagicItemsController < ApplicationController
     if @magic_item
       render json: @magic_item
     else
-      render json: @magic_item.errors, status: :unprocessable_entity
+      render json: { error: 'Magic item not found' }, status: :not_found
     end
   end
 
