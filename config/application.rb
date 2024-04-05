@@ -25,7 +25,7 @@ module ShopKeeper
     # config.eager_load_paths << Rails.root.join("extras")
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'https://shop-keeper.vercel.app', 'localhost:3000' # replace with the origin of your Angular app
+        origins 'https://shop-keeper.vercel.app', 'localhost:4200' # replace with the origin of your Angular app
         resource '*', headers: :any, methods: %i[get post put patch delete options head]
       end
     end
