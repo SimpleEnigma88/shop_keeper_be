@@ -21,7 +21,7 @@ class PlayersController < ApplicationController
     if player.save
       render json: player, status: :created
     else
-      puts player.errors
+      puts player.errors.full_messages
       render json: player.errors, status: :unprocessable_entity
     end
   end
