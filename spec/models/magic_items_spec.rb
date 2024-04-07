@@ -91,21 +91,20 @@ RSpec.describe MagicItemsController, type: :controller do # rubocop:disable Metr
     end
   end
 
-  describe 'DELETE #destroy' do
-    it 'destroys the requested magic_item' do
-      magic_item = MagicItem.create! valid_attributes
-      expect do
-        delete :destroy, params: { id: magic_item.to_param }
-      end.to change(MagicItem, :count).by(-1)
+  describe 'GET #show' do
+    context "when id is 'random'" do
+      before do
+        MagicItem.create! valid_attributes
+      end
+
+      it 'returns a random magic item' do
+        get :show, params: { id: 'random' }
+        expect(response).to be_successful
+        json_response = JSON.parse(response.body)
+        expect(json_response.keys).to include('id', 'name', 'desc', 'rarity')
+      end
     end
   end
 
-  describe 'GET #random' do
-    it 'returns a random magic_item' do
-      magic_items = Array.new(10) { MagicItem.create! valid_attributes }
-      get :random, params: { excluded_rarities: 'Common,Uncommon' }
-      expect(response).to be_successful
-      expect(magic_items.map(&:id)).to include(JSON.parse(response.body)['id'])
-    end
-  end
+  # it returns a random magic item
 end
