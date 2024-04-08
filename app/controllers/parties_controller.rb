@@ -14,16 +14,18 @@ class PartiesController < ApplicationController
     render json: @parties, status: :ok
   end
 
-  def show
-    if params[:player_id]
-      @player = Player.find(params[:player_id])
-      @party = @player.dm_parties.find(params[:id])
-    elsif params[:character_id]
-      @character = Character.find(params[:character_id])
-      @party = @character.parties.find(params[:id])
-    end
-    render json: @party, status: :ok
+def show
+  if params[:player_id]
+    @player = Player.find(params[:player_id])
+    @parties = @player.dm_parties
+  elsif params[:character_id]
+    @character = Character.find(params[:character_id])
+    @parties = @character.parties
+  elsif params[:party_id]
+    @party = Party.find(params[:party_id])
   end
+  render json: @parties || @party, status: :ok
+end
 
   def create
     party = @player.dm_parties.new(party_params)
