@@ -38,7 +38,7 @@ end
   end
 
   def update
-    party = @player.parties.find(params[:id])
+    party = @player.dm_parties.find(params[:id])
 
     if party.update(party_params)
       render json: party, status: :ok
@@ -48,7 +48,7 @@ end
   end
 
   def destroy
-    party = @player.parties.find(params[:id])
+    party = @player.dm_parties.find(params[:id])
 
     if party.destroy
       render json: party, status: :ok
